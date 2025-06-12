@@ -1,0 +1,30 @@
+# Environment files (contains sensitive credentials)
+.env
+
+# dbt generated files
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# IDE
+.vscode/
+.DS_Store
+
+# Other
+venv/*
+**/.venv
+venv_**
+logs/
+*.log
+.coverage
+.pytest_cache/
+
+# User-specific files
+SETUP.MD

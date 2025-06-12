@@ -1,0 +1,28 @@
+name: 'imp_poc'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'imp_poc'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# Configuring models
+models:
+  imp_poc:
+    # Staging models should be materialized as views
+    staging:
+      +materialized: view
+    # Marts models should be materialized as tables
+    marts:
+      +materialized: table

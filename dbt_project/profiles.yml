@@ -1,0 +1,35 @@
+imp_poc:
+  target: local
+  outputs:
+    prod:
+      type: snowflake
+      account: "{{ env_var('SF_BASE_ACCOUNT') }}"
+      user: "{{ env_var('SF_PROD_USER') }}"
+      password: "{{ env_var('SF_PROD_PASSWORD') }}"
+      role: "{{ env_var('SF_PROD_ROLE') }}"
+      warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
+      database: "{{ env_var('SF_PROD_DATABASE') }}"
+      schema: "{{ env_var('SF_PROD_SCHEMA') }}"
+      threads: 8
+      
+    qa:
+      type: snowflake
+      account: "{{ env_var('SF_BASE_ACCOUNT') }}"
+      user: "{{ env_var('SF_QA_USER') }}"
+      password: "{{ env_var('SF_QA_PASSWORD') }}"
+      role: "{{ env_var('SF_QA_ROLE') }}"
+      warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
+      database: "{{ env_var('SF_QA_DATABASE') }}"
+      schema: "{{ env_var('SF_QA_SCHEMA') }}"
+      threads: 8
+      
+    local:
+      type: snowflake
+      account: "{{ env_var('SF_BASE_ACCOUNT') }}"
+      user: "{{ env_var('SF_USER_USERNAME') }}"
+      password: "{{ env_var('SF_USER_PASSWORD') }}"
+      role: "{{ env_var('SF_USER_ROLE') }}"
+      warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
+      database: "{{ env_var('SF_USER_DATABASE') }}"
+      schema: "{{ env_var('SF_USER_SCHEMA') }}"
+      threads: 8

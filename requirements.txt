@@ -1,0 +1,2 @@
+# Add your Python packages here
+dbt-snowflake==1.9.0
