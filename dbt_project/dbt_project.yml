@@ -2,10 +2,8 @@ name: 'imp_poc'
 version: '1.0.0'
 config-version: 2
 
-# This setting configures which "profile" dbt uses for this project.
 profile: 'imp_poc'
 
-# These configurations specify where dbt should look for different types of files.
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -13,16 +11,36 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-clean-targets:         # directories to be removed by `dbt clean`
+target-path: "target"
+clean-targets:
   - "target"
   - "dbt_packages"
 
-# Configuring models
+# Hooks for dbt_artifacts (with dedicate schema)
+on-run-start:
+  - "CREATE SCHEMA IF NOT EXISTS {{ target.database }}.TECH"
+  - "GRANT USAGE ON SCHEMA {{ target.database }}.TECH TO ROLE {{ target.role }}"
+  - "GRANT CREATE TABLE ON SCHEMA {{ target.database }}.TECH TO ROLE {{ target.role }}"
+  - "GRANT CREATE VIEW ON SCHEMA {{ target.database }}.TECH TO ROLE {{ target.role }}"
+  - "{{ dbt_artifacts.upload_invocations() }}"
+  
+# Post-hooks: Run AFTER all models execute
+on-run-end:
+  - "{{ dbt_artifacts.upload_results(results) }}"
+  - "{{ dbt_artifacts.upload_invocations() }}"
+
 models:
+  # Global project-level configurations
+  +packages: ['pandas', 'numpy', 'scikit-learn', 'statsmodels']
+  
+  # dbt_artifacts package configuration
+  dbt_artifacts:
+    +schema: TECH
+    +materialized: table
+  
+  # Your project structure
   imp_poc:
-    # Staging models should be materialized as views
     staging:
       +materialized: view
-    # Marts models should be materialized as tables
     marts:
       +materialized: table
