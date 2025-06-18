@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: raw   # Chose an appropriate name to indicate the source of the data (e.g. S3, Onestream, mysql-S3)
+    description: "Raw data tables from Snowflake"  # Leave a description to provide context for the source
+    database: MOVIELENS  # Replace with your actual database name
+    schema: RAW      # Replace with your actual schema name (e.g., RAW, PUBLIC, etc.)
+    
+    tables:
+      - name: raw_genome_scores
+        description: "Raw genome scores data"
+        
+      - name: raw_genome_tags
+        description: "Raw genome tags data"
+        
+      - name: raw_links
+        description: "Raw links data"
+        
+      - name: raw_movies
+        description: "Raw movies data"
+        
+      - name: raw_ratings
+        description: "Raw ratings data"
+        
+      - name: raw_tags
+        description: "Raw tags data"

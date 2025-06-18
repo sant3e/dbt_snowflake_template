@@ -9,3 +9,6 @@ __pycache__
 .pytest_cache
 .coverage
 venv/
+
+# Local private keys for Snowflake auth, should not be in the image
+keys/ 

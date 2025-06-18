@@ -16,18 +16,19 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-# Hooks for dbt_artifacts (with dedicate schema)
+# Hooks for dbt_artifacts (with dedicated schema)
 on-run-start:
   - "CREATE SCHEMA IF NOT EXISTS {{ target.database }}.TECH"
   - "GRANT USAGE ON SCHEMA {{ target.database }}.TECH TO ROLE {{ target.role }}"
   - "GRANT CREATE TABLE ON SCHEMA {{ target.database }}.TECH TO ROLE {{ target.role }}"
   - "GRANT CREATE VIEW ON SCHEMA {{ target.database }}.TECH TO ROLE {{ target.role }}"
-  - "{{ dbt_artifacts.upload_invocations() }}"
+
   
 # Post-hooks: Run AFTER all models execute
 on-run-end:
-  - "{{ dbt_artifacts.upload_results(results) }}"
-  - "{{ dbt_artifacts.upload_invocations() }}"
+
+- "{% if target.name == 'prod' %}{{ dbt_artifacts.upload_results(results) }}{% endif %}"
+
 
 models:
   # Global project-level configurations
@@ -36,11 +37,34 @@ models:
   # dbt_artifacts package configuration
   dbt_artifacts:
     +schema: TECH
-    +materialized: table
   
+  # Default configuration for seeds
+  seeds:
+    +enabled: true
+    schema: SEEDS
+    +tags: 
+      - SOURCE
+      - SEEDS
+
+  # Default configuration for snapshots
+  snapshots:
+    imp_poc:
+      +enabled: true
+      target_schema: SNAPSHOTS
+
   # Your project structure
   imp_poc:
+    # RAW schema and content should be declared and documentend as sources in a sources.yml file (withing staging folder, or a dedicated subfolder)
     staging:
+      +schema: STG
       +materialized: view
     marts:
+      +schema: MARTS
+      +materialized: table
+      dim:
+        +materialized: table
+      fact:
+        +materialized: table
+    reports:
+      +schema: REPORTS
       +materialized: table

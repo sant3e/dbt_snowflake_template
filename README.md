@@ -1,93 +1,340 @@
-# imp_poc
+# DBT Project - Developer Setup Instructions
 
+**If you're joining an existing project, follow these steps to get up and running:**
 
+## Prerequisites
 
-## Getting started
+Before starting, ensure you have the following installed on your local machine:
+- **Docker Desktop** (for containerization)
+- **VSCode** with the "Dev Containers" extension
+- **Git** (for version control)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### Check if Git is installed and configured:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/booking-com/personal/tdiaconescu/imp_poc.git
-git branch -M main
-git push -uf origin main
+```bash
+git --version
 ```
 
-## Integrate with your tools
+```bash
+git config --global user.name
+```
 
-- [ ] [Set up project integrations](https://gitlab.com/booking-com/personal/tdiaconescu/imp_poc/-/settings/integrations)
+```bash
+git config --global user.email
+```
 
-## Collaborate with your team
+If Git is not installed or configured, follow these steps:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+**Install Git:**
+- **Windows**: Download from [git-scm.com](https://git-scm.com/download/win)
+- **macOS**: `brew install git` or download from [git-scm.com](https://git-scm.com/download/mac)
+- **Linux**: `sudo apt-get install git` (Ubuntu/Debian) or equivalent for your distribution
 
-## Test and Deploy
+**Configure Git:**
 
-Use the built-in continuous integration in GitLab.
+```bash
+git config --global user.name "Your Name"
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+```bash
+git config --global user.email "your.email@booking.com"
+```
 
-***
+## Setup Instructions
 
-# Editing this README
+### 1. Clone the Repository
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+```bash
+git clone git@gitlab.com:..url../project_name.git
+```
 
-## Suggestions for a good README
+```bash
+cd project_name
+```
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+**Note**: Once your request for GIT Passport Policy is approved, you should receive a link to your project's repo. Using the `Code` button, copy the "Clone with HTTPS" url and replace in the clone command.
 
-## Name
-Choose a self-explaining name for your project.
+If SSH doesn't work, use HTTPS with Personal Access Token:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+```bash
+git clone https://gitlab.com/booking-com/personal/username/project_name.git
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### 2. Open in VSCode and Setup Container
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```bash
+code .
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- VSCode will detect the `.devcontainer` configuration
+- Click "Reopen in Container" when prompted
+- VSCode will automatically build the container and install all extensions
+- Wait for the container to build (this may take a few minutes on first run)
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### 3. Create Your Personal Environment File
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+```bash
+cp .env.example .env
+```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+### 4. Configure Your Snowflake Credentials
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+**This is the most critical step!** Edit your `.env` file with your actual Snowflake credentials:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+```bash
+nano .env
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+**Required Configuration:**
+Replace the placeholder values with your actual Snowflake information:
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+```env
+# === Snowflake Base Configuration ===
+SF_BASE_ACCOUNT=your_actual_snowflake_account_locator
+SF_BASE_WAREHOUSE=your_default_compute_warehouse
 
-## License
-For open source projects, say how it is licensed.
+# === Local Development Configuration ===
+SF_USER_USERNAME=your_snowflake_username
+SF_USER_ROLE=your_snowflake_development_role
+SF_USER_DATABASE=your_development_database_name
+SF_USER_SCHEMA=PUBLIC
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+**Choose ONE authentication method:**
+
+#### Option A: Password Authentication (Simplest)
+###Uncomment and fill in:
+# SF_USER_PASSWORD=your_snowflake_password
+
+#### Option B: SSO Authentication (Recommended for Enterprise)
+### No additional variables needed for basic SSO
+
+#### Option C: Key-Pair Authentication (Most Secure)
+### Uncomment and fill in:
+SF_USER_PRIVATE_KEY_PATH=/app/keys/your_private_key_filename.p8
+SF_USER_PRIVATE_KEY_PASSPHRASE=your_key_passphrase_if_encrypted
+```
+
+**Important Notes:**
+- Your `.env` file and `keys/` folder contains sensitive credentials - never commit it to Git
+- Ask your team lead for the correct values for your environment
+
+### 5. Set the Correct Target in profiles.yml
+
+Edit the target setting in `dbt_project/profiles.yml` to match your chosen authentication method:
+
+```bash
+nano dbt_project/profiles.yml
+```
+
+Change the `target:` line at the top to one of:
+- `target: local_password` (for password auth)
+- `target: local_sso` (for SSO auth)
+- `target: local_keypair` (for key-pair auth)
+    + place your private key file inside the `keys/` folder
+
+### 6. Install DBT Packages
+
+```bash
+cd /app/dbt_project
+```
+
+```bash
+dbt deps
+```
+
+This installs all required dbt packages including:
+- dbt_utils (utility macros)
+- dbt_expectations (data quality tests)
+- dbt_artifacts (execution metadata)
+- codegen (code generation helpers)
+
+### 7. Test Your Connection
+
+```bash
+dbt debug
+```
+
+**Expected Output:**
+```
+Configuration:
+    profiles.yml file [OK found and valid]
+    dbt_project.yml file [OK found and valid]
+
+Required dependencies:
+    - git [OK found]
+
+Connection:
+    account: your_account
+    user: your_username
+    database: your_database
+    schema: your_schema
+    warehouse: your_warehouse
+    role: your_role
+    All checks passed!
+```
+
+**If you see errors:**
+- Double-check your `.env` file values
+- Verify your Snowflake access permissions
+- Ensure the target in `profiles.yml` matches your authentication method
+- Ask your team lead for help with Snowflake credentials
+
+### 8. Start Developing
+
+```bash
+# Run all models - automatically creates schemas and collects metadata
+dbt run
+```
+
+```bash
+# Run tests to validate data quality
+dbt test
+```
+
+```bash
+# Run for different environments (if you have access)
+dbt run --target qa
+```
+
+```bash
+dbt run --target prod
+```
+
+```bash
+# Run only your project models (excludes dbt_artifacts)
+dbt run --exclude package:dbt_artifacts
+```
+
+```bash
+# Compile models without running them
+dbt compile
+```
+
+```bash
+# Generate documentation
+dbt docs generate
+```
+
+```bash
+# Serve documentation locally
+dbt docs serve
+```
+
+## Project Structure
+
+Once set up, you'll be working with this structure:
+
+```
+project_name/
+├── .env (your personal credentials - not in Git)
+├── .env.example (template)
+├── keys/ (your private keys - not in Git)
+├── dbt_project/
+│   ├── profiles.yml (Snowflake connections)
+│   ├── dbt_project.yml (main project config)
+│   ├── packages.yml (dbt dependencies)
+│   ├── models/
+│   │   ├── staging/ (raw data transformations)
+│   │   ├── marts/ (core business logic)
+│   │   └── reports/ (final outputs)
+│   ├── macros/ (custom SQL functions)
+│   ├── seeds/ (static data files)
+│   ├── snapshots/ (historical data tracking)
+│   └── tests/ (data quality tests)
+└── [Docker and VSCode config files]
+```
+
+## Available VSCode Extensions
+
+The dev container automatically installs these helpful extensions:
+- **Cody AI**: AI coding assistant for dbt development
+- **dbt Extensions**: Syntax highlighting, formatting, shortcuts
+- **dbt Power User**: Advanced dbt development features
+- **Python Extension Pack**: For Python models and analysis
+- **Jupyter**: For data exploration notebooks
+
+## Common Commands
+
+### Development Workflow
+```bash
+# Work on specific models
+dbt run --select model_name
+dbt run --select staging.*
+dbt run --select marts.dim_table_name+
+
+# Test specific models
+dbt test --select model_name
+dbt test --select staging.*
+
+# Fresh start (clean and rebuild)
+dbt clean
+dbt deps
+dbt run
+```
+
+### Model Development
+```bash
+# Generate model boilerplate
+dbt run-operation generate_model_yaml --args '{"model_names": ["model_name"]}'
+
+# Generate source boilerplate
+dbt run-operation generate_source --args '{"schema_name": "raw_schema", "database_name": "database"}'
+```
+
+### Documentation
+```bash
+# Generate and serve docs
+dbt docs generate
+dbt docs serve --port 8001
+```
+
+## Troubleshooting
+
+### Connection Issues
+1. **"Could not connect to Snowflake"**
+     - Verify your `.env` file has correct values
+     - Check that your Snowflake user is active
+     - Ensure your role has proper permissions
+
+2. **"Database/Schema does not exist"**
+     - Ask your team lead to verify your database access
+     - Check if you're using the correct database name in `.env`
+
+3. **"Authentication failed"**
+     - For password auth: verify your password is correct (deprecating auth method)
+     - For SSO: ensure you're logged into your SSO provider
+     - For key-pair: verify your private key file path and passphrase
+
+### SSH/Git Issues
+```bash
+# Test SSH connection to GitLab
+ssh -T git@gitlab.com
+
+# If SSH fails, try HTTPS with Personal Access Token
+git remote set-url origin https://gitlab.com/path/to/repo.git
+```
+
+### Container Issues
+- If the container won't start: Try "Dev Containers: Rebuild Container" in VSCode
+- If extensions aren't loading: Check the "Extensions" tab in VSCode
+- If you get permission errors: Ensure Docker Desktop is running
+
+## Getting Help
+
+1. **Check the logs**: Look in `dbt_project/logs/` for detailed error messages
+2. **Ask your team**: Your team lead can help with Snowflake credentials and permissions
+3. **Use Cody AI**: The AI assistant can help with dbt syntax and best practices
+4. **DBT Documentation**: [docs.getdbt.com](https://docs.getdbt.com/)
+
+## Next Steps
+
+After successful setup:
+1. **Explore the existing models** in `models/staging/` and `models/marts/`
+2. **Review the documentation** by running `dbt docs serve`
+3. **Check out the sources** defined in `models/staging/sources.yml`
+4. **Start with small changes** to understand the project structure
+5. **Ask questions** - your team is here to help!
+
+---
+
+**Remember**: Never commit your `.env` file or `keys/` folder to Git. These contain sensitive credentials and are automatically ignored by Git.

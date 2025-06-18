@@ -1,35 +1,65 @@
 imp_poc:
-  target: local
+  target: local_password
   outputs:
     prod:
       type: snowflake
       account: "{{ env_var('SF_BASE_ACCOUNT') }}"
       user: "{{ env_var('SF_PROD_USER') }}"
-      password: "{{ env_var('SF_PROD_PASSWORD') }}"
       role: "{{ env_var('SF_PROD_ROLE') }}"
       warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
       database: "{{ env_var('SF_PROD_DATABASE') }}"
       schema: "{{ env_var('SF_PROD_SCHEMA') }}"
       threads: 8
-      
+      authenticator: snowflake_jwt # For key-pair authentication
+      private_key_path: "{{ env_var('SF_PROD_PRIVATE_KEY_PATH') }}"
+      private_key_passphrase: "{{ env_var('SF_PROD_PRIVATE_KEY_PASSPHRASE', '') }}" # Optional: use if your key is encrypted
+      python_translator: dbt.adapters.snowflake.python.SnowflakePythonTranslator
+
     qa:
       type: snowflake
       account: "{{ env_var('SF_BASE_ACCOUNT') }}"
       user: "{{ env_var('SF_QA_USER') }}"
-      password: "{{ env_var('SF_QA_PASSWORD') }}"
       role: "{{ env_var('SF_QA_ROLE') }}"
       warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
       database: "{{ env_var('SF_QA_DATABASE') }}"
       schema: "{{ env_var('SF_QA_SCHEMA') }}"
       threads: 8
-      
-    local:
+      authenticator: snowflake_jwt # For key-pair authentication
+      private_key_path: "{{ env_var('SF_QA_PRIVATE_KEY_PATH') }}"
+      private_key_passphrase: "{{ env_var('SF_QA_PRIVATE_KEY_PASSPHRASE', '') }}" # Optional: use if your key is encrypted
+      python_translator: dbt.adapters.snowflake.python.SnowflakePythonTranslator
+
+    local_sso: # For local development using SSO (e.g., externalbrowser)
       type: snowflake
       account: "{{ env_var('SF_BASE_ACCOUNT') }}"
-      user: "{{ env_var('SF_USER_USERNAME') }}"
-      password: "{{ env_var('SF_USER_PASSWORD') }}"
+      user: "{{ env_var('SF_USER_USERNAME') }}" # Your SSO-enabled Snowflake username
       role: "{{ env_var('SF_USER_ROLE') }}"
       warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
       database: "{{ env_var('SF_USER_DATABASE') }}"
       schema: "{{ env_var('SF_USER_SCHEMA') }}"
       threads: 8
+      authenticator: externalbrowser
+
+    local_password: # For local development using username/password
+      type: snowflake
+      account: "{{ env_var('SF_BASE_ACCOUNT') }}"
+      user: "{{ env_var('SF_USER_USERNAME') }}" # Snowflake username
+      password: "{{ env_var('SF_USER_PASSWORD') }}" # Snowflake password
+      role: "{{ env_var('SF_USER_ROLE') }}"
+      warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
+      database: "{{ env_var('SF_USER_DATABASE') }}"
+      schema: "{{ env_var('SF_USER_SCHEMA') }}"
+      threads: 8
+
+    local_keypair: # For local development using key-pair authentication
+      type: snowflake
+      account: "{{ env_var('SF_BASE_ACCOUNT') }}"
+      user: "{{ env_var('SF_USER_USERNAME') }}" # Snowflake user associated with the key-pair
+      role: "{{ env_var('SF_USER_ROLE') }}"
+      warehouse: "{{ env_var('SF_BASE_WAREHOUSE') }}"
+      database: "{{ env_var('SF_USER_DATABASE') }}"
+      schema: "{{ env_var('SF_USER_SCHEMA') }}"
+      threads: 8
+      authenticator: snowflake_jwt # Or your specific key-pair authenticator string
+      private_key_path: "{{ env_var('SF_USER_PRIVATE_KEY_PATH') }}"
+      private_key_passphrase: "{{ env_var('SF_USER_PRIVATE_KEY_PASSPHRASE', '') }}"
