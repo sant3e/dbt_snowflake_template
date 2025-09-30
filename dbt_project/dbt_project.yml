@@ -16,6 +16,21 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+  
+# Default configuration for seeds
+seeds:
+  +enabled: true
+  schema: SEEDS
+  +tags: 
+    - SOURCE
+    - SEEDS
+
+# Default configuration for snapshots
+snapshots:
+  imp_poc:
+    +enabled: true
+    target_schema: SNAPSHOTS
+
 # Hooks for dbt_artifacts (with dedicated schema)
 on-run-start:
   - "CREATE SCHEMA IF NOT EXISTS {{ target.database }}.TECH"
@@ -29,7 +44,6 @@ on-run-end:
 
 - "{% if target.name == 'prod' %}{{ dbt_artifacts.upload_results(results) }}{% endif %}"
 
-
 models:
   # Global project-level configurations
   +packages: ['pandas', 'numpy', 'scikit-learn', 'statsmodels']
@@ -37,20 +51,6 @@ models:
   # dbt_artifacts package configuration
   dbt_artifacts:
     +schema: TECH
-  
-  # Default configuration for seeds
-  seeds:
-    +enabled: true
-    schema: SEEDS
-    +tags: 
-      - SOURCE
-      - SEEDS
-
-  # Default configuration for snapshots
-  snapshots:
-    imp_poc:
-      +enabled: true
-      target_schema: SNAPSHOTS
 
   # Your project structure
   imp_poc:
