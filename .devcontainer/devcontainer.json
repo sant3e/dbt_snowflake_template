@@ -29,7 +29,9 @@
 				"esbenp.prettier-vscode",
 				"samuelcolvin.jinjahtml",
 				"innoverio.vscode-dbt-power-user",
-				"ms-python.black-formatter"
+				"ms-python.black-formatter",
+				"ms-python.python",
+				"alimtateai.vscode-altimate-mcp-server",
 			]
 		}
 	},
